@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.fragins.management.dao.BranchDataDao">
+
+    <!--查找所有-->
+    <select id="selectAll" resultType="com.sinosoft.fragins.management.po.BranchData">
+        select
+        *
+        from branch_data
+    </select>
+    <!--查找所有-->
+    <select id="selectByBranchNameAndDate" resultType="com.sinosoft.fragins.management.po.BranchData">
+        select
+        *
+        from branch_data
+        where branch_name = #{branchName} and deal_date = #{dealDate} and deal_earth != 1
+    </select>
+    <!--查找所有-->
+    <select id="selectByBranchNameAndDateAnddataType" resultType="com.sinosoft.fragins.management.po.BranchData">
+        select
+        *
+        from branch_data
+        where branch_name = #{branchName} and deal_date = #{dealDate} and data_type = #{dataType} and deal_earth != 1
+    </select>
+    <select id="selectDealPinCountByBranchNameAndDate" resultType="java.lang.String">
+        select
+        sum(dealPin)
+        from branch_data
+        where branch_name = #{branchName} and deal_date = #{dealDate}
+    </select>
+
+    <delete id="deleteAll">
+        delete from branch_data
+    </delete>
+
+</mapper>

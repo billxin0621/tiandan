@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- 被写入的文件位置，可以是相对目录，也可以是绝对目录 -->
+	<property name="LOG_PATH" value="/export/Logs" />
+	<!-- 应用名 -->
+	<property name="APP_NAME" value="${hostName}"/>
+	<!-- 日志保留天数 -->
+	<property name="LOG_DAY" value="10"/>
+	<!-- 每个日志文件大小 -->
+	<property name="LOG_SIZE" value="300MB"/>
+	<!-- 日志总大小 -->
+	<property name="LOG_TOTALSIZE" value="1GB"/>
+	<!-- 日志格式化格式 -->
+	<property name="LOG_PATTERN" value="||%d{yyyy-MM-dd HH:mm:ss.SSS}||[%thread]||%-5level||[%logger{36}]||%msg%n" />
+	<!-- 服务器ip -->
+	<!--<conversionRule conversionWord="ip" converterClass="com.sinosoft.fragins.framework.config.LogIpConfig"/>-->
+	<!-- uuid -->
+	<!--<conversionRule conversionWord="uuid" converterClass="com.sinosoft.fragins.framework.config.UidConfig"/>-->
+	<!-- 标准输出模式 控制台console -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	<!-- 全量日志 -->
+	<appender name="fileAll" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--日志被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。-->
+		<file>${LOG_PATH}/${APP_NAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_PATH}/${APP_NAME}.%d{yyyy-MM-dd-HH}.log</FileNamePattern>
+			<!--日志文件保留小时数，此处的时间单位是从fileNamePattern的yyyy-MM-dd_HH中提取的，yyyy-MM-dd_HH精确到小时，因此单位就是小时-->
+			<MaxHistory>${LOG_DAY}</MaxHistory>
+			<totalSizeCap>${LOG_TOTALSIZE}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	<!-- info日志 -->
+	<appender name="fileInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--日志被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。-->
+		<file>${LOG_PATH}/${APP_NAME}_info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${APP_NAME}_info.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!--日志文件保留小时数，此处的时间单位是从fileNamePattern的yyyy-MM-dd_HH中提取的，yyyy-MM-dd_HH精确到小时，因此单位就是小时-->
+			<MaxHistory>${LOG_DAY}</MaxHistory>
+			<totalSizeCap>${LOG_TOTALSIZE}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		<!-- 过滤策略：
+            LevelFilter ： 只打印level标签设置的日志级别
+            ThresholdFilter：打印大于等于level标签设置的级别，小的舍弃
+         -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!--设置过滤级别-->
+			<level>INFO</level>
+		</filter>
+	</appender>
+	<!-- error日志 -->
+	<appender name="fileError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${APP_NAME}_error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${APP_NAME}_error.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+		<!-- 过滤策略：
+            LevelFilter ： 只打印level标签设置的日志级别
+            ThresholdFilter：打印大于等于level标签设置的级别，小的舍弃
+         -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!--设置过滤级别-->
+			<level>ERROR</level>
+		</filter>
+	</appender>
+
+	<!-- springProfile多环境日志输出，根据不同环境（dev:开发环境，test:测试环境，uat:预发环境，production:生产环境）来定义不同的日志输出，读取spring.profiles.active的值 -->
+	<springProfile name="dev,test,uat">
+		<logger name="com.zaxxer.hikari" level="debug" />
+		<logger name="com.sinosoft" level="debug" />
+		<logger name="org.mybatis" level="debug" />
+		<logger name="com.github" level="debug" />
+	</springProfile>
+
+	<springProfile name="production">
+		<logger name="com.zaxxer.hikari" level="info" />
+		<logger name="com.sinosoft" level="info" />
+		<logger name="org.mybatis" level="debug" />
+		<logger name="com.github" level="info" />
+	</springProfile>
+	<!-- springProfile多环境日志输出，根据不同环境（dev:开发环境，test:测试环境，uat:预发环境，production:生产环境）来定义不同的日志输出，读取spring.profiles.active的值 -->
+	<root level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="fileAll" />
+		<appender-ref ref="fileInfo" />
+		<appender-ref ref="fileError" />
+	</root>
+</configuration>

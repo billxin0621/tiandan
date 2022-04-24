@@ -1,0 +1,14 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.fragins.management.dao.BranchDataResultDao">
+    <select id="selectByBranchNameAnddataWeidu" resultType="com.sinosoft.fragins.management.po.BranchDataResult">
+        select
+        *
+        from branch_data_result
+        where branch_name = #{branchName} and data_weidu = #{dataWeidu}
+    </select>
+
+    <delete id="deleteAll">
+        delete from branch_data_result
+    </delete>
+
+</mapper>

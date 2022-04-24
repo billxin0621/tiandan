@@ -1,0 +1,121 @@
+apollo:
+  bootstrap:
+    enabled: true
+    namespaces: fragins-management-service,application
+    eagerLoad:
+      enabled: true
+  meta: http://service-apollo-config-server.apollo:8080
+app:
+  id: fragins-server-uat
+
+server:
+  port: 8080
+
+#server:
+#  port: 8080
+#
+#jasypt:
+#  encryptor:
+#    password: fragins
+#
+#spring:
+#  application:
+#    name: fragins-management-service
+#  # JSON解析配置
+#  jackson:
+#    date-format: com.sinosoft.fragins.framework.utils.SmartDateFormat
+#    time-zone: GMT+8
+#  # 缓存配置
+#  cache:
+#    type: caffeine
+#    caffeine:
+#      spec: maximumSize=4096,expireAfterAccess=60s
+#  # redis配置
+#  redis:
+#    host: redis-ed4v1obgrrac-proxy-nlb.jvessel-open-jdstack-zhongyunxin.jdcloud.local
+#    port: 6379
+#    password: Fchx202001
+#  jdbc:
+#    template:
+#      fetch-size: 500
+#
+#
+## sharding-jdbc数据源整合不了spring-boot-actuator，屏蔽掉db的健康检查
+#management:
+#  health:
+#    db:
+#      enabled: false
+#
+##eureka:
+##  client:
+##    serviceUrl:
+##      defaultZone: http://127.0.0.1:38761/eureka/
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#  httpclient:
+#    enabled: true
+#
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 15000
+#
+#fragins-policy-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: fgn-policy-service.ins-core-fragins-uat:8080
+#    ReadTimeout: 15000
+#    ConnectTimeout: 3000
+#fragins-claim-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: fgn-claim-service.ins-core-fragins-uat:8080
+#    ReadTimeout: 15000
+#    ConnectTimeout: 3000
+#fragins-check-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: fgn-check-service.ins-core-fragins-uat:8080
+#    ReadTimeout: 15000
+#    ConnectTimeout: 3000
+#
+## 数据源配置
+#datasource:
+#  nexus_main:
+#    jdbcUrl: jdbc:mysql://10.233.2.86:3306/nexus_main?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true
+#    username: fgn_mgt_u_rw
+#    password: Fchx202001
+#    maximumPoolSize: 256
+#    minimumIdle: 5
+#  policy_invoice_202003:
+#    jdbcUrl: jdbc:mysql://10.233.2.83:3306/policy_invoice_202003?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true
+#    username: fgn_po_u_rw
+#    password: Fchx202001
+#    maximumPoolSize: 256
+#    minimumIdle: 5
+#
+## mybatis相关配置
+#mybatis:
+#  mapperLocations: classpath:mapper/*.xml
+#  configuration.mapUnderscoreToCamelCase: true
+#
+## rocketmq配置
+#rocketmq:
+#  namesrvAddr: 10.233.2.13:9876
+#  producerGroup: fraginsManagementProducer
+#  consumerGroup: fraginsManagementConsumer
+#
+## 文件存储配置
+#fileStorage:
+#  type: s3
+#  s3:
+#    endpoint: s3.stack-region.jdcloud.local
+#    accessKeyId: E617E947FD7EE630DBEFB6DEFB7F3080
+#    accessKeySecret: E801452231B867B0CCAA5AB8821D2505
+#    bucketName: fchx-cpgc-uat
+#    region: stack-region

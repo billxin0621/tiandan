@@ -1,0 +1,117 @@
+apollo:
+  bootstrap:
+    enabled: true
+    namespaces: fragins-management-service,application
+    eagerLoad:
+      enabled: true
+  meta: http://apollo.jdazcn.com/
+app:
+  id: fragins-server-production
+
+server:
+  port: 8080
+#
+#jasypt:
+#  encryptor:
+#    password: fragins
+#
+#spring:
+#  application:
+#    name: fragins-management-service
+#  # JSON解析配置
+#  jackson:
+#    date-format: com.sinosoft.fragins.framework.utils.SmartDateFormat
+#    time-zone: GMT+8
+#  # 缓存配置
+#  cache:
+#    type: caffeine
+#    caffeine:
+#      spec: maximumSize=4096,expireAfterAccess=60s
+#  # redis配置
+#  redis:
+#    host: AZJD_REDIS_URL
+#    port: 6379
+#    password: AZJD_REDIS_AUTH
+#  jdbc:
+#    template:
+#      fetch-size: 500
+#
+## sharding-jdbc数据源整合不了spring-boot-actuator，屏蔽掉db的健康检查
+#management:
+#  health:
+#    db:
+#      enabled: false
+#
+##eureka:
+##  client:
+##    serviceUrl:
+##      defaultZone: http://127.0.0.1:38761/eureka/
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#  httpclient:
+#    enabled: true
+#
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 30000
+#
+#fragins-policy-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: fgn-policy-service.ins-core-fragins-production:8080
+#    ReadTimeout: 30000
+#    ConnectTimeout: 3000
+#fragins-claim-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: fgn-claim-service.ins-core-fragins-production:8080
+#    ReadTimeout: 30000
+#    ConnectTimeout: 3000
+#fragins-check-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: fgn-check-service.ins-core-fragins-production:8080
+#    ReadTimeout: 30000
+#    ConnectTimeout: 3000
+#
+## 数据源配置
+#datasource:
+#  nexus_main:
+#    jdbcUrl: jdbc:mysql://AZJD_MYSQL_URL_1/nexus_main?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true
+#    username: AZJD_MYSQL_USER_1
+#    password: AZJD_MYSQL_PASSWORD_1
+#    maximumPoolSize: 256
+#    minimumIdle: 5
+#  policy_invoice_202003:
+#    jdbcUrl: jdbc:mysql://AZJD_MYSQL_URL_8/policy_invoice_202003?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true
+#    username: AZJD_MYSQL_USER_8
+#    password: AZJD_MYSQL_PASSWORD_8
+#    maximumPoolSize: 256
+#    minimumIdle: 5
+#
+## mybatis相关配置
+#mybatis:
+#  mapperLocations: classpath:mapper/*.xml
+#  configuration.mapUnderscoreToCamelCase: true
+#
+## rocketmq配置
+#rocketmq:
+#  namesrvAddr: AZJD_ROCKETMQ_URL:9876
+#  producerGroup: fraginsManagementProducer
+#  consumerGroup: fraginsManagementConsumer
+#
+## 文件存储配置
+#fileStorage:
+#  type: s3
+#  s3:
+#    endpoint: s3.stack-region.jdcloud.local
+#    accessKeyId: AZJD_OSS_AK
+#    accessKeySecret: AZJD_OSS_SK
+#    bucketName: fchx-fgn
+#    region: stack-region

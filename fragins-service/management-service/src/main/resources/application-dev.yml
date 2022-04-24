@@ -1,0 +1,142 @@
+server:
+  port: 8080
+
+jasypt:
+  encryptor:
+    password: fragins
+
+spring:
+  application:
+    name: fragins-management-service
+  # JSON解析配置
+  jackson:
+    date-format: com.sinosoft.fragins.framework.utils.SmartDateFormat
+    time-zone: GMT+8
+  # 缓存配置
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=4096,expireAfterAccess=60s
+  # redis配置
+  redis:
+    host: redis-mik4tmy7hi67-proxy-nlb.jvessel-open-jdstack.jdcloud.local
+    port: 6379
+    password: CbZR7C35iEtmfyig
+  jdbc:
+    template:
+      fetch-size: 500
+  # datasource配置
+  shardingsphere:
+    props:
+      sql:
+        show: true
+    datasource:
+      names: db0
+      db0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://jddb-stack-zhongyunxin-b1f98e6020eb4a68.jdcloud.local:3306/sp_claim?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true
+        username: fchx_allc_d_rw
+        password: fmqGCT4gqsHDwQJB
+        connection-test-query: SELECT 1 FROM DUAL
+        connection-timeout: 30000
+        idle-timeout: 30000
+        max-lifetime: 1800000
+        maximum-pool-size: 70
+        minimum-idle: 20
+        pool-name: db0HikariCP
+        remove-abandoned-timeout: 1800000
+        test-on-borrow: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 3600000
+        validation-query: SELECT 1 FROM DUAL
+    # 分表策略
+    sharding:
+      default-data-source-name: db0
+      tables:
+        # 理赔从2020年5月到现在 5kw+数据量，因此可以进行分表
+        order_data_receive:
+          # 标准分片表配置 由数据源名 + 表名组成
+          actual-data-nodes: db0.order_data_receive_$->{0..4}
+          # 分表策略
+          table-strategy:
+            standard:
+              sharding-column: request_id
+              # 精确分片 = in 查询
+              precise-algorithm-class-name: com.sinosoft.fragins.framework.sharding.StringHashPreciseShardingAlgorithm
+
+# sharding-jdbc数据源整合不了spring-boot-actuator，屏蔽掉db的健康检查
+management:
+  server:
+    port: 8080
+    servlet:
+      context-path: /
+    ssl:
+      enabled: false
+  health:
+    db:
+      enabled: false
+  endpoint:
+    httptrace:
+      enabled: false
+    shutdown:
+      enabled: false
+    configprops:
+      enabled: false
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,httptrace
+        exclude: trace,shutdown,configprops
+  trace:
+    http:
+      enabled: false
+
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://127.0.0.1:38761/eureka/
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 15000
+
+# mybatis相关配置
+mybatis:
+  mapperLocations: classpath*:mapper/*.xml
+  configuration.mapUnderscoreToCamelCase: true
+
+# rocketmq配置
+rocketmq:
+  namesrvAddr: 10.233.129.21:9876
+  producerGroup: fraginsManagementProducer
+  consumerGroup: fraginsManagementConsumer
+
+# 文件存储配置
+fileStorage:
+  type: vfs
+  vfs:
+    baseUrl: file:///D:/fragins
+  oss:
+    endpoint: 11
+    accessKeyId: 11
+    accessKeySecret: 11
+    bucketName: 11
+
+# 服务直接通过fegin直接调用服务
+ribbon:
+  eureka:
+    enabled: false
+fragins-claim-service: #@FeignClient("服务名")
+  ribbon:
+    listOfServers: http://fragins-claim-server:8080 # k8s部署使用 同一个namespace下：http://appname:port即可 不同一个：http://appname.namespace:port    bucketName: 11
+
+cb:
+  #承保-碎管 地址
+  CBFraginsDomain: http://ins-core-fragments-test.jdazcn.com/api/management/

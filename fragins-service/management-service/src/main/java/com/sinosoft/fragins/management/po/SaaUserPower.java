@@ -1,0 +1,57 @@
+package com.sinosoft.fragins.management.po;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import lombok.Data;
+
+/** 用户权限配置表 */
+@Data
+@Table(name = "saa_user_power")
+@SuppressWarnings("serial")
+public class SaaUserPower implements java.io.Serializable {
+
+	/** 自增主键 */
+	@Id
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private java.lang.Long id;
+
+	/** 用户代码 */
+	private java.lang.String userCode;
+
+	/** 匹配因子 */
+	private java.lang.String factorCode;
+
+	/** 匹配操作符 */
+	private java.lang.String dataOper;
+
+	/** 匹配值 */
+	private java.lang.String dataValue;
+
+	/** 系统代码 */
+	private java.lang.String systemCode;
+
+	/** 版本 */
+	private java.lang.Long version;
+
+	/** 创建人员 */
+	private java.lang.String creator;
+
+	/** 更新人员 */
+	private java.lang.String updater;
+
+	/** 创建时间 */
+	private java.util.Date createTime;
+
+	/** 最后更新时间 */
+	private java.util.Date updateTime;
+
+	/** 删除标志 */
+	private java.lang.Long deleteFlag;
+
+}

@@ -1,0 +1,5 @@
+# bootstrap.yml只是为了此配置spring.cloud.config.enabled=false，此配置在bootstrap.yml中生效，application.yml中不生效
+spring:
+  cloud:
+    config:
+      enabled: false

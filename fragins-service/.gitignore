@@ -1,0 +1,8 @@
+**/target/**
+.idea/
+parent.iml
+management-service/management-service.iml
+gateway-service/gateway-service.iml
+claim-service/claim-service.iml
+app-framework/app-framework.iml
+code-service/code-service.iml

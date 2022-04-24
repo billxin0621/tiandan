@@ -1,0 +1,15 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.fragins.management.dao.SaleDataDao">
+
+    <!--查找所有-->
+    <select id="selectAll" resultType="com.sinosoft.fragins.management.po.SaleData">
+        select
+        *
+        from sale_data
+    </select>
+
+    <delete id="deleteAll">
+        delete from sale_data
+    </delete>
+
+</mapper>
