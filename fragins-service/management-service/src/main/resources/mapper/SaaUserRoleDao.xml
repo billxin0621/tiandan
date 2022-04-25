@@ -1,6 +1,0 @@
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sinosoft.fragins.management.dao.SaaUserRoleDao">
-    <select id="findUserRoleByUserCode" resultType="com.sinosoft.fragins.management.po.SaaUserRole">
-        select * from saa_user_role where user_code=#{param1} and delete_flag=0 
-    </select>
-</mapper>

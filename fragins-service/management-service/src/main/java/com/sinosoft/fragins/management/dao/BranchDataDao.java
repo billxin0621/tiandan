@@ -1,7 +1,6 @@
 package com.sinosoft.fragins.management.dao;
 
 import com.sinosoft.fragins.management.po.BranchData;
-import com.sinosoft.fragins.management.po.SaaRole;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 

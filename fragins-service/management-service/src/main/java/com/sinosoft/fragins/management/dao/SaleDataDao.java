@@ -1,6 +1,5 @@
 package com.sinosoft.fragins.management.dao;
 
-import com.sinosoft.fragins.management.po.BranchData;
 import com.sinosoft.fragins.management.po.SaleData;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;

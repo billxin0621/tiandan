@@ -1,8 +1,0 @@
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sinosoft.fragins.management.dao.UtiConfigDao">
-	
-	<select id="selectByProfileTypeAndConfigKey" resultType="com.sinosoft.fragins.management.po.UtiConfig">
-		select * from uti_config where profile_type=#{param1} and config_key=#{param2} and delete_flag &lt;&gt; 1;
-	</select>
-	
-</mapper>
