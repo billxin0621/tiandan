@@ -8,6 +8,35 @@
         from sale_data
     </select>
 
+    <!--查找所有-->
+    <select id="selectBySaleNameAndDate" resultType="com.sinosoft.fragins.management.po.SaleData">
+        select
+        *
+        from sale_data
+        where sale_name = #{saleName} and deal_date = #{dealDate} and deal_earth != 1
+    </select>
+    <!--查找所有-->
+    <select id="selectGroupBySaleNameAndDate" resultType="com.sinosoft.fragins.management.po.SaleData">
+        select
+        *
+        from sale_data
+        where deal_earth != 1
+        group by sale_name,deal_date
+    </select>
+    <!--查找所有-->
+    <select id="selectBySaleNameAndDateAnddataType" resultType="com.sinosoft.fragins.management.po.SaleData">
+        select
+        *
+        from sale_data
+        where sale_name = #{saleName} and deal_date = #{dealDate} and data_type = #{dataType} and deal_earth != 1
+    </select>
+    <select id="selectDealPinCountBySaleNameAndDate" resultType="java.lang.String">
+        select
+        sum(dealPin)
+        from sale_data
+        where sale_name = #{saleName} and deal_date = #{dealDate}
+    </select>
+
     <delete id="deleteAll">
         delete from sale_data
     </delete>

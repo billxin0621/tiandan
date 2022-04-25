@@ -15,15 +15,16 @@ public class SaleData implements java.io.Serializable {
 	@Id
 	private String id             ;
 	private String dealDate      ;
-	private String branchId      ;
 	private String branchName    ;
-	private String saleId    ;
 	private String saleName    ;
 	private String dataType      ;
 	private String dealEarth     ;
-	private String dealPin       ;
-	private String dealParentId ;
+	private BigDecimal dealPin       ;
+	private BigDecimal dealParentId ;
 	private BigDecimal dealAmt       ;
 	private BigDecimal dealSum       ;
+	private BigDecimal arpuCount     ;//ARPU（成交金额/用户数）
+	private BigDecimal pinCount       ;//购买频次（订单/用户数）
+	private BigDecimal parentIdAmt       ;//客单价（成交金额/订单）
 
 }
