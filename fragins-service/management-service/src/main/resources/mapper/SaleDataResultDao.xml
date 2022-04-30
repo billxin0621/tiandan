@@ -1,14 +1,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sinosoft.fragins.management.dao.SaleDataResultDao">
-    <select id="selectByBranchNameAnddataWeidu" resultType="com.sinosoft.fragins.management.po.SaleDataResult">
+    <select id="selectBySaleNameAnddataWeidu" resultType="com.sinosoft.fragins.management.po.SaleDataResult">
         select
         *
         from sale_data_result
-        where sale_name = #{branchName} and data_weidu = #{dataWeidu}
+        where sale_name = #{saleName} and data_weidu = #{dataWeidu}
+    </select>
+    <select id="selectGroupBySaleNameAnddataWeidu" resultType="com.sinosoft.fragins.management.po.SaleDataResult">
+        select
+        *
+        from sale_data_result
+        group by sale_name,data_weidu
     </select>
 
     <delete id="deleteAll">
         delete from sale_data_result
     </delete>
+
+    <insert id="insertBatch" >
+        insert into
+        sale_data_result
+        (
+        id,
+        branch_name,
+        sale_name,
+        data_weidu,
+        data_type,
+        deal_pin,
+        deal_amt,
+        deal_sum,
+        deal_parent_id,
+        arpu,
+        pin_count,
+        parent_id_amt
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.branchName},
+            #{item.saleName},
+            #{item.dataWeidu},
+            #{item.dataType},
+            #{item.dealPin},
+            #{item.dealAmt},
+            #{item.dealSum},
+            #{item.dealParentId},
+            #{item.arpu},
+            #{item.pinCount},
+            #{item.parentIdAmt}
+            )
+        </foreach>
+    </insert>
+
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sale_data_result
+            set
+            <set>
+                branch_name=#{item.branchName},
+                sale_name=#{item.saleName},
+                data_weidu=#{item.dataWeidu},
+                data_type=#{item.dataType},
+                deal_pin=#{item.dealPin},
+                deal_amt=#{item.dealAmt},
+                deal_sum=#{item.dealSum},
+                deal_parent_id=#{item.dealParentId},
+                arpu=#{item.arpu},
+                pin_count=#{item.pinCount},
+                parent_id_amt=#{item.parentIdAmt}
+            </set>
+            where
+            id = #{item.id}
+        </foreach>
+    </update>
 
 </mapper>

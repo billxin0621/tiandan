@@ -24,6 +24,14 @@
         group by sale_name,deal_date
     </select>
     <!--查找所有-->
+    <select id="selectGroupBySaleNameAndType" resultType="com.sinosoft.fragins.management.po.SaleData">
+        select
+        *
+        from sale_data
+        where deal_earth != 1
+        group by sale_name,data_type
+    </select>
+    <!--查找所有-->
     <select id="selectBySaleNameAndDateAnddataType" resultType="com.sinosoft.fragins.management.po.SaleData">
         select
         *
@@ -40,5 +48,69 @@
     <delete id="deleteAll">
         delete from sale_data
     </delete>
+    <delete id="deleteDealEarth">
+        delete from sale_data where deal_earth = 1
+    </delete>
+
+
+    <insert id="insertBatch" >
+        insert into
+        sale_data
+        (
+        id,
+        deal_date,
+        branch_name,
+        sale_name,
+        data_type,
+        deal_earth,
+        deal_pin,
+        deal_parent_id,
+        deal_amt,
+        deal_sum,
+        arpu_count,
+        pin_count,
+        parent_id_amt
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.dealDate},
+            #{item.branchName},
+            #{item.saleName},
+            #{item.dataType},
+            #{item.dealEarth},
+            #{item.dealPin},
+            #{item.dealParentId},
+            #{item.dealAmt},
+            #{item.dealSum},
+            #{item.arpuCount},
+            #{item.pinCount},
+            #{item.parentIdAmt}
+            )
+        </foreach>
+    </insert>
+
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sale_data
+            <set>
+                deal_date=#{item.dealDate},
+                branch_name=#{item.branchName},
+                sale_name=#{item.saleName},
+                data_type=#{item.dataType},
+                deal_earth=#{item.dealEarth},
+                deal_pin=#{item.dealPin},
+                deal_parent_id=#{item.dealParentId},
+                deal_amt=#{item.dealAmt},
+                arpu_count=#{item.arpuCount},
+                pin_count=#{item.pinCount},
+                parent_id_amt=#{item.parentIdAmt}
+            </set>
+            where
+            id = #{item.id}
+        </foreach>
+    </update>
 
 </mapper>

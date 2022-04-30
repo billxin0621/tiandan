@@ -12,5 +12,11 @@ public interface BranchDataResultDao extends Mapper<BranchDataResult> {
 
     List<BranchDataResult> selectByBranchNameAnddataWeidu(@Param("branchName") String branchName, @Param("dataWeidu") String dataWeidu);
 
+    List<BranchDataResult> selectGroupByBranchNameAnddataWeidu();
+
     void deleteAll();
+
+    void insertBatch(List<BranchDataResult> list);
+
+    void updateBatch(List<BranchDataResult> list);
 }

@@ -35,16 +35,11 @@ spring:
     password: db_test_usr_pw
     connection-test-query: SELECT 1 FROM DUAL
     connection-timeout: 30000
-    idle-timeout: 30000
-    max-lifetime: 1800000
-    maximum-pool-size: 70
-    minimum-idle: 20
+    idle-timeout: 180000
+    max-lifetime: 600000
+    maximum-pool-size: 250
+    minimum-idle: 80
     pool-name: db0HikariCP
-    remove-abandoned-timeout: 1800000
-    test-on-borrow: false
-    test-while-idle: true
-    time-between-eviction-runs-millis: 3600000
-    validation-query: SELECT 1 FROM DUAL
     # 分表策略
 #    sharding:
 #      default-data-source-name: db0
@@ -138,3 +133,5 @@ claim:
     pass:
       front:
       trans: BX0052
+
+sale: bjzya,shicengquan,huangtao27,wangjiayi24,zhangxuewei15,luomingqiu1,mahua39,zhangyihan6,lisaixin,fengle1

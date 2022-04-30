@@ -37,7 +37,7 @@ spring:
       db0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://39.99.151.204:5001/db_test?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true
+        jdbc-url: jdbc:mysql://39.99.151.204:5001/db_test?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&nullNamePatternMatchesAll=true&pinGlobalTxToPhysicalConnection=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
         username: db_test_usr
         password: db_test_usr_pw
         connection-test-query: SELECT 1 FROM DUAL
@@ -142,3 +142,5 @@ fragins-claim-service: #@FeignClient("服务名")
 cb:
   #承保-碎管 地址
   CBFraginsDomain: http://ins-core-fragments-test.jdazcn.com/api/policy
+
+sale: bjzya,shicengquan,huangtao27,wangjiayi24,zhangxuewei15,luomingqiu1,mahua39,zhangyihan6,lisaixin,fengle1
