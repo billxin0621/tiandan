@@ -84,7 +84,7 @@ public class DataClearService {
             branchDataDao.deleteDealEarth();
             saleDataDao.deleteDealEarth();
 
-            // 3.跨境母婴自营组2022-04 数据
+            // 完善
             List<BranchData> branchDataGroup = branchDataDao.selectGroupByBranchNameAndDate();
             for (int i = 0; i < branchDataGroup.size(); i++) {
                 this.caculateBranch(branchDataGroup.get(i).getBranchName(), branchDataGroup.get(i).getDealDate());

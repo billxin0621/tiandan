@@ -6,6 +6,7 @@ import com.sinosoft.fragins.management.dao.BranchDataDao;
 import com.sinosoft.fragins.management.dto.dataClear.DataClearQueryCondition;
 import com.sinosoft.fragins.management.dto.dataClear.DataClearUploadFile;
 import com.sinosoft.fragins.management.po.BranchData;
+import com.sinosoft.fragins.management.service.BranchSaleShopService;
 import com.sinosoft.fragins.management.service.DataClearService;
 import com.sinosoft.fragins.management.vo.DataClear.DataClearVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.math.BigDecimal;
 public class DataClearApi {
 
     @Autowired
+    private BranchSaleShopService branchSaleShopService;
+    @Autowired
     private DataClearService dataClearService;
     @Autowired
     private BranchDataDao branchDataDao;
@@ -31,6 +34,13 @@ public class DataClearApi {
     @PostMapping("/excute")
     public String excute(DataClearUploadFile request) throws Exception{
         String response = dataClearService.excute();
+
+        return response;
+    }
+
+    @PostMapping("/excute1")
+    public String excute1(DataClearUploadFile request) throws Exception{
+        String response = branchSaleShopService.excute();
 
         return response;
     }

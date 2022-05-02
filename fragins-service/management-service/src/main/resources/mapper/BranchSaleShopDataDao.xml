@@ -1,0 +1,130 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.fragins.management.dao.BranchSaleShopDataDao">
+
+    <!--查找所有-->
+    <select id="selectAll" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+    </select>
+    <!--查找所有-->
+    <select id="selectByName" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where name = #{name} and deal_earth != 1
+    </select>
+    <!--查找所有-->
+    <select id="selectByNameAndDate" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where name = #{name} and deal_date = #{dealDate} and deal_earth != 1
+    </select>
+    <!--查找所有-->
+    <select id="selectGroupByNameAndDate" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where deal_earth != 1
+        group by name,deal_date
+    </select>
+    <!--查找所有-->
+    <select id="selectGroupByNameAndType" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where deal_earth != 1
+        group by name,data_type
+    </select>
+    <!--查找所有-->
+    <select id="selectGroupByName" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where deal_earth != 1
+        group by name
+    </select>
+    <!--查找所有-->
+    <select id="selectByNameAndType" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where name = #{name} and data_type = #{dataType} and deal_earth != 1
+    </select>
+    <!--查找所有-->
+    <select id="selectByNameAndDateAnddataType" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        *
+        from branch_sale_shop_data
+        where name = #{name} and deal_date = #{dealDate} and data_type = #{dataType} and deal_earth != 1
+    </select>
+
+    <select id="selectDealPinCountByNameAndDate" resultType="java.lang.String">
+        select
+        sum(dealPin)
+        from branch_sale_shop_data
+        where name = #{name} and deal_date = #{dealDate}
+    </select>
+
+    <select id="selectDealDate" resultType="com.sinosoft.fragins.management.po.BranchSaleShopData">
+        select
+        deal_date
+        from branch_sale_shop_data
+        group by deal_date
+    </select>
+
+    <delete id="deleteAll">
+        delete from branch_sale_shop_data
+    </delete>
+
+    <delete id="deleteDealEarth">
+        delete from branch_sale_shop_data where deal_earth = 1
+    </delete>
+
+    <delete id="deleteTwoNew">
+        delete from branch_sale_shop_data where data_type = '站内新' or data_type = '站外新'
+    </delete>
+
+    <insert id="insertBatch" >
+        insert into
+        branch_sale_shop_data
+        (
+            id,
+            deal_date,
+            name,
+            data_type,
+            deal_earth,
+            deal_pin
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+            #{item.id},
+            #{item.dealDate},
+            #{item.name},
+            #{item.dataType},
+            #{item.dealEarth},
+            #{item.dealPin}
+        )
+        </foreach>
+    </insert>
+
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update branch_data
+            <set>
+                deal_date=#{item.dealDate},
+                name=#{item.name},
+                data_type=#{item.dataType},
+                deal_earth=#{item.dealEarth},
+                deal_pin=#{item.dealPin}
+            </set>
+            where
+                id = #{item.id}
+        </foreach>
+    </update>
+
+
+</mapper>
