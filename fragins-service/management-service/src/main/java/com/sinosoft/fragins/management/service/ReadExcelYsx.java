@@ -53,7 +53,7 @@ public class ReadExcelYsx {
                     cell.setCellType(CellType.STRING);
                     sb.append(cell);
                     if (index != row.getPhysicalNumberOfCells() - 1){
-                        sb.append(",");
+                        sb.append(",,");
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class ReadExcelYsx {
         for(int i=0;i<list.size();i++){
             body=sheet.createRow(i);
             String str = list.get(i);
-            String[] arr = str.split(",");
+            String[] arr = str.split(",,");
             for (int j = 0; j < arr.length; j++) {
                 cell=body.createCell(j);
                 cell.setCellValue(arr[j]);

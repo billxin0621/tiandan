@@ -40,7 +40,15 @@ public class DataClearApi {
 
     @PostMapping("/excute1")
     public String excute1(DataClearUploadFile request) throws Exception{
-        String response = branchSaleShopService.excute();
+        String fileResource = "D:\\workspace\\workspaceMyself\\部门.xlsx";
+        String fileResult = "D:\\workspace\\workspaceMyself\\部门结果.xls";
+        String response = branchSaleShopService.excute(fileResource, fileResult);
+        fileResource = "D:\\workspace\\workspaceMyself\\采销.xlsx";
+        fileResult = "D:\\workspace\\workspaceMyself\\采销结果.xls";
+        response = branchSaleShopService.excuteSale(fileResource, fileResult);
+        fileResource = "D:\\workspace\\workspaceMyself\\店铺.xlsx";
+        fileResult = "D:\\workspace\\workspaceMyself\\店铺结果.xls";
+        response = branchSaleShopService.excuteDianpu(fileResource, fileResult);
 
         return response;
     }

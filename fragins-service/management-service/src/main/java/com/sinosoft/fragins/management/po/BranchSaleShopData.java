@@ -19,5 +19,6 @@ public class BranchSaleShopData implements java.io.Serializable {
 	private String dataType      ;
 	private String dealEarth     ;
 	private BigDecimal dealPin       ;
+	private BigDecimal count       ;
 
 }

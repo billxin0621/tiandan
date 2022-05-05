@@ -21,6 +21,8 @@ public interface BranchSaleShopDataDao extends Mapper<BranchSaleShopData> {
 
     List<BranchSaleShopData> selectGroupByName();
 
+    List<BranchSaleShopData> selectCountGroupByName();
+
     List<BranchSaleShopData> selectByNameAndDateAnddataType(@Param("name") String name, @Param("dealDate") String dealDate, @Param("dataType") String dataType);
 
     String selectDealPinCountByNameAndDate(@Param("name") String name, @Param("dealDate") String dealDate);
@@ -32,6 +34,8 @@ public interface BranchSaleShopDataDao extends Mapper<BranchSaleShopData> {
     void deleteAll();
 
     void deleteDealEarth();
+
+    void deleteByName(@Param("name") String name);
 
     void deleteTwoNew();
 
