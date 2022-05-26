@@ -199,11 +199,85 @@ public class BranchSaleShopService {
             // 3.删除全球的
             branchSaleShopDataDao.deleteDealEarth();
 
-
+            // 判断无2022年数据的删除
             List<BranchSaleShopData> delList = branchSaleShopDataDao.selectCountGroupByName();
             for (int i = 0; i < delList.size(); i++) {
                 if (delList.get(i).getCount().compareTo(new BigDecimal("6")) < 0){
-                    branchSaleShopDataDao.deleteByName(delList.get(i).getName());
+                    List<BranchSaleShopData> checkList = branchSaleShopDataDao.selectByNameAndDate(delList.get(i).getName(), dateBig);
+                    if (checkList == null || checkList.size() == 0){
+                        branchSaleShopDataDao.deleteByName(delList.get(i).getName());
+                    }
+                }
+            }
+
+            // 4.完善
+            List<BranchSaleShopData> dataGroup = branchSaleShopDataDao.selectGroupByNameAndDate();
+            for (int i = 0; i < dataGroup.size(); i++) {
+                this.caculateData(dataGroup.get(i).getName(), dataGroup.get(i).getDealDate());
+            }
+
+            // 5.删除站内新、站外新数据
+            branchSaleShopDataDao.deleteTwoNew();
+
+            // 3.跨境母婴自营组 总用户 数据
+            List<BranchSaleShopData> dataGroupResult = branchSaleShopDataDao.selectGroupByName();
+            for (int i = 0; i < dataGroupResult.size(); i++) {
+                this.caculateResult(dataGroupResult.get(i).getName());
+            }
+
+
+            // 13.跨境母婴自营组 总用户 结果
+            List<BranchSaleShopResultData> resultList = branchSaleShopResultDataDao.selectAll();
+            List<String> listBranchExcel = new ArrayList<>();
+            listBranchExcel.add(strTitle);
+            for (int i = 0; i < resultList.size(); i++) {
+                BranchSaleShopResultData data = resultList.get(i);
+                String strNow = this.excuteResult(data);
+                listBranchExcel.add(strNow);
+            }
+            ReadExcelYsx.exportonefile(fileResult, listBranchExcel);
+
+        }catch (Exception e){
+            throw e;
+        }finally {
+            // 5.删除数据
+            branchSaleShopDataDao.deleteAll();
+            branchSaleShopResultDataDao.deleteAll();
+        }
+
+        return "true";
+
+    }
+
+
+    public String excutePinpai(String fileSource, String fileResult) throws Exception{
+        try{
+            // 1.读取部门采销店铺excel信息
+            List<BranchSaleShopData> branchDataList = this.readPinpaiExcel(fileSource);
+            branchSaleShopDataDao.insertBatch(branchDataList);
+
+
+            // 2.获取日期
+            List<BranchSaleShopData> dealDateList = branchSaleShopDataDao.selectDealDate();
+            if (dealDateList.get(0).getDealDate().compareTo(dealDateList.get(1).getDealDate()) > 0){
+                dateSmall = dealDateList.get(1).getDealDate();
+                dateBig = dealDateList.get(0).getDealDate();
+            }else {
+                dateSmall = dealDateList.get(0).getDealDate();
+                dateBig = dealDateList.get(1).getDealDate();
+            }
+
+            // 3.删除全球的
+            branchSaleShopDataDao.deleteDealEarth();
+
+            // 判断无2022年数据的删除
+            List<BranchSaleShopData> delList = branchSaleShopDataDao.selectCountGroupByName();
+            for (int i = 0; i < delList.size(); i++) {
+                if (delList.get(i).getCount().compareTo(new BigDecimal("6")) < 0){
+                    List<BranchSaleShopData> checkList = branchSaleShopDataDao.selectByNameAndDate(delList.get(i).getName(), dateBig);
+                    if (checkList == null || checkList.size() == 0){
+                        branchSaleShopDataDao.deleteByName(delList.get(i).getName());
+                    }
                 }
             }
 
@@ -253,11 +327,23 @@ public class BranchSaleShopService {
         String str = "";
         str = str + data.getName() + ",,";
         str = str + data.getDealPinTotal() + ",,";
-        str = str + decimalFormat.format(data.getTongbiTotal()) + ",,";
+        if (data.getTongbiTotal() == null){
+            str = str + "NULL" + ",,";
+        }else {
+            str = str + decimalFormat.format(data.getTongbiTotal()) + ",,";
+        }
         str = str + data.getDealPinNew() + ",,";
-        str = str + decimalFormat.format(data.getTongbiNew()) + ",,";
+        if (data.getTongbiNew() == null){
+            str = str + "NULL" + ",,";
+        }else {
+            str = str + decimalFormat.format(data.getTongbiNew()) + ",,";
+        }
         str = str + data.getDealPinOld() + ",,";
-        str = str + decimalFormat.format(data.getTongbiOld());
+        if (data.getTongbiOld() == null){
+            str = str + "NULL" + ",,";
+        }else {
+            str = str + decimalFormat.format(data.getTongbiOld()) + ",,";
+        }
         return str;
     }
 
@@ -267,44 +353,80 @@ public class BranchSaleShopService {
         List<BranchSaleShopData> totalList = branchSaleShopDataDao.selectByNameAndType(name, dataType);
         BranchSaleShopData dataTotalSmall = new BranchSaleShopData();
         BranchSaleShopData dataTotalBig = new BranchSaleShopData();
-        if (totalList.get(0).getDealDate().compareTo(totalList.get(1).getDealDate()) > 0){
-            dataTotalSmall = totalList.get(1);
+        if (totalList != null && totalList.size() == 1){
+            dataTotalSmall = new BranchSaleShopData();
             dataTotalBig = totalList.get(0);
+        }else if (totalList.size() == 0) {
+            dataTotalSmall = new BranchSaleShopData();
+            dataTotalBig = new BranchSaleShopData();
         }else {
-            dataTotalSmall = totalList.get(0);
-            dataTotalBig = totalList.get(1);
+            if (totalList.get(0).getDealDate().compareTo(totalList.get(1).getDealDate()) > 0){
+                dataTotalSmall = totalList.get(1);
+                dataTotalBig = totalList.get(0);
+            }else {
+                dataTotalSmall = totalList.get(0);
+                dataTotalBig = totalList.get(1);
+            }
         }
         dataType = "老用户";
         List<BranchSaleShopData> oldList = branchSaleShopDataDao.selectByNameAndType(name, dataType);
         BranchSaleShopData dataOldSmall = new BranchSaleShopData();
         BranchSaleShopData dataOldBig = new BranchSaleShopData();
-        if (oldList.get(0).getDealDate().compareTo(oldList.get(1).getDealDate()) > 0){
-            dataOldSmall = oldList.get(1);
+        if (oldList == null || oldList.size() == 1){
+            dataOldSmall = new BranchSaleShopData();
             dataOldBig = oldList.get(0);
+        }else if (oldList.size() == 0) {
+            dataOldSmall = new BranchSaleShopData();
+            dataOldBig = new BranchSaleShopData();
         }else {
-            dataOldSmall = oldList.get(0);
-            dataOldBig = oldList.get(1);
+            if (oldList.get(0).getDealDate().compareTo(oldList.get(1).getDealDate()) > 0){
+                dataOldSmall = oldList.get(1);
+                dataOldBig = oldList.get(0);
+            }else {
+                dataOldSmall = oldList.get(0);
+                dataOldBig = oldList.get(1);
+            }
         }
         dataType = "新用户";
         List<BranchSaleShopData> newList = branchSaleShopDataDao.selectByNameAndType(name, dataType);
         BranchSaleShopData dataNewSmall = new BranchSaleShopData();
         BranchSaleShopData dataNewBig = new BranchSaleShopData();
-        if (newList.get(0).getDealDate().compareTo(newList.get(1).getDealDate()) > 0){
-            dataNewSmall = newList.get(1);
+        if (newList != null && newList.size() == 1){
+            dataNewSmall = new BranchSaleShopData();
             dataNewBig = newList.get(0);
+        }else if (newList.size() == 0) {
+            dataNewSmall = new BranchSaleShopData();
+            dataNewBig = new BranchSaleShopData();
         }else {
-            dataNewSmall = newList.get(0);
-            dataNewBig = newList.get(1);
+            if (newList.get(0).getDealDate().compareTo(newList.get(1).getDealDate()) > 0){
+                dataNewSmall = newList.get(1);
+                dataNewBig = newList.get(0);
+            }else {
+                dataNewSmall = newList.get(0);
+                dataNewBig = newList.get(1);
+            }
         }
 
         BranchSaleShopResultData body = new BranchSaleShopResultData();
         body.setName(name);
         body.setDealPinTotal(dataTotalBig.getDealPin());
-        body.setTongbiTotal(dataTotalBig.getDealPin().divide(dataTotalSmall.getDealPin(),2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1.00")));
+        if (dataTotalSmall.getDealPin() == null || dataTotalSmall.getDealPin().compareTo(BigDecimal.ZERO) == 0){
+            body.setTongbiTotal(null);
+        }else {
+            body.setTongbiTotal(dataTotalBig.getDealPin().divide(dataTotalSmall.getDealPin(),2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1.00")));
+        }
         body.setDealPinOld(dataOldBig.getDealPin());
-        body.setTongbiOld(dataOldBig.getDealPin().divide(dataOldSmall.getDealPin(),2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1.00")));
+        if (dataOldSmall.getDealPin() == null || dataOldSmall.getDealPin().compareTo(BigDecimal.ZERO) == 0){
+            body.setTongbiOld(null);
+        }else {
+            body.setTongbiOld(dataOldBig.getDealPin().divide(dataOldSmall.getDealPin(),2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1.00")));
+        }
         body.setDealPinNew(dataNewBig.getDealPin());
-        body.setTongbiNew(dataNewBig.getDealPin().divide(dataNewSmall.getDealPin(),2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1.00")));
+        if (dataNewSmall.getDealPin() == null || dataNewSmall.getDealPin().compareTo(BigDecimal.ZERO) == 0){
+            body.setTongbiNew(null);
+        }else {
+            body.setTongbiNew(dataNewBig.getDealPin().divide(dataNewSmall.getDealPin(),2, BigDecimal.ROUND_HALF_UP).subtract(new BigDecimal("1.00")));
+        }
         branchSaleShopResultDataDao.insertSelective(body);
 
     }
@@ -351,6 +473,25 @@ public class BranchSaleShopService {
             data.setDataType(arr[2]);
             data.setDealEarth(arr[3]);
             data.setDealPin(arr[4] == null || arr[4].equals("") ? new BigDecimal("0.00"): new BigDecimal(arr[4]).setScale(2, BigDecimal.ROUND_HALF_UP));
+            listData.add(data);
+        }
+        return listData;
+    }
+
+
+
+    public List<BranchSaleShopData> readPinpaiExcel(String fileSource) throws Exception{
+        List<String> list = ReadExcelYsx.readExcel(fileSource);
+        List<BranchSaleShopData> listData = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            String str = list.get(i);
+            String[] arr = str.split(",,");
+            BranchSaleShopData data = new BranchSaleShopData();
+            data.setDealDate(arr[0]);
+            data.setName(arr[1] + "---" + arr[2] + "---" + arr[3]);
+            data.setDataType(arr[4]);
+            data.setDealEarth(arr[5]);
+            data.setDealPin(arr[6] == null || arr[6].equals("") ? new BigDecimal("0.00"): new BigDecimal(arr[6]).setScale(2, BigDecimal.ROUND_HALF_UP));
             listData.add(data);
         }
         return listData;
