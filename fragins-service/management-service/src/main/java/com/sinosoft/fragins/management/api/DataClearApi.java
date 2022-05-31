@@ -60,6 +60,24 @@ public class DataClearApi {
         return response;
     }
 
+    @PostMapping("/excute2")
+    public String excute2(DataClearUploadFile request) throws Exception{
+        String fileResource = "/data/springCloud/management-service/file/部门.xlsx";
+        String fileResult = "/data/springCloud/management-service/file/部门结果.xls";
+        String response = branchSaleShopService.excute(fileResource, fileResult);
+        fileResource = "/data/springCloud/management-service/file/采销.xlsx";
+        fileResult = "/data/springCloud/management-service/file/采销结果.xls";
+        response = branchSaleShopService.excuteSale(fileResource, fileResult);
+        fileResource = "/data/springCloud/management-service/file/店铺.xlsx";
+        fileResult = "/data/springCloud/management-service/file/店铺结果.xls";
+        response = branchSaleShopService.excuteDianpu(fileResource, fileResult);
+        fileResource = "/data/springCloud/management-service/file/品牌.xlsx";
+        fileResult = "/data/springCloud/management-service/file/品牌结果.xls";
+        response = branchSaleShopService.excutePinpai(fileResource, fileResult);
+
+        return response;
+    }
+
     @PostMapping("/test")
     public ApiResponse<String> test(DataClearUploadFile request) {
         BranchData branchData = new BranchData();
